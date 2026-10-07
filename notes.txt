@@ -1,0 +1,12 @@
+
+
+/*NOTE: we know that the board starts with black square on the position 0. 
+    so we have even nr = black and odd nr = white
+    BUT at the nest row, it s the other way, inverse
+    so we make the trick with row and col. 
+    ex: row 1 col 3 => 1+3 = 4 % 2 == 0. And its black indeed*/
+
+    int position = 1; // keep in mind that bits have index starting at 0, so 1 is actually bit 2
+    board = board | (1ULL << position); // move the bit 1 on the position 
+
+    
