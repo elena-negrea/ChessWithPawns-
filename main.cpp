@@ -42,16 +42,46 @@ Example: E2
     std::cout<<"  +---+---+---+---+---+---+---+---+\n";
 }
 
-int initialposition_Pawns(const int BOARD_WIDTH){
-    for (int row = BOARD_WIDTH; row >= 1; row--){
+
+void initialposition_Pawns( uint64_t& whitePawns, uint64_t& blackPawns, const int BOARD_WIDTH){
+    //the initial pozitions of whitePawns and blackPawns
+
+    whitePawns = 0;
+    blackPawns = 0;
+
+    const int WHITE_START_ROW = 2;
+    const int BLACK_START_ROW = 7;
+    for(int col = 0; col < BOARD_WIDTH; col++){
+        int whiteIndex = (WHITE_START_ROW - 1) * BOARD_WIDTH + col;//we use it to find out what bit corresponds with ex: E2 = 12
+        int blackIndex = (BLACK_START_ROW - 1) * BOARD_WIDTH + col;//index is the position for one single bit
+
+        whitePawns |= (1ULL << whiteIndex); // Set the bit corresponding to the pawn's position on the chessboard.
+        blackPawns |= (1ULL << blackIndex);
         
-        for(int col = 0; col <= BOARD_WIDTH; col++){}
-
+        
     }
+    /*ALTERNATIVE:otherwise we could have whitePawns = 255ULL << 8; to just put directly the  row of bits */
+}
 
+void input_player( const int BOARD_WIDTH, int fromIndex, int toIndex){
+    std::string from, to;
+     std::cout <<"Enter your move (letternumber)." << std::endl;
+    std::cout <<"From: ";
+    std::cin >> from;
+    std::cout << std::endl;
+    std::cout <<" to ";
+    std::cin >> to;
 
-}/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aici am ramas
+    //convert from ASCII to values into our board
+    int fromCol = from[0] - 'A';
+    int fromRow = from[1] - '0';
+    fromIndex = (fromRow - 1) * BOARD_WIDTH + fromCol;
 
+    int toCol = to[0] - 'A';
+    int toRow = to[1] - '0';
+
+    toIndex = (toRow - 1) * BOARD_WIDTH + toCol;
+}
 
 int main(){
 
@@ -87,9 +117,13 @@ int main(){
     uint64_t whitePawns = 0;
     uint64_t blackPawns = 0;
     
-    
-
+    initialposition_Pawns(whitePawns, blackPawns, BOARD_WIDTH);
     print_board(BOARD_WIDTH, whitePawns, blackPawns);
+
+    //variables connected to the input_player
+    int fromIndex, toIndex;
+
+    input_player(BOARD_WIDTH, fromIndex, toIndex);
     
 
     return 0;
